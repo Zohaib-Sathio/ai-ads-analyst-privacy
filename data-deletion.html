@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>How to Delete Your Data — AI Ads Analyst</title>
+  <meta name="description" content="Instructions for requesting deletion of your AI Ads Analyst account and campaign data." />
+  <link rel="canonical" href="https://github.com/Zohaib-Sathio/ai-ads-analyst-privacy/blob/main/data-deletion.html" />
+
+  <style>
+    :root {
+      --max-width: 900px;
+      --muted: #6b7280;
+      --heading-color: #111827;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    body { margin: 0; padding: 2rem; display: flex; justify-content: center; background: #fff; color: #111; }
+    main { max-width: var(--max-width); width: 100%; }
+    h1 { margin: 0 0 0.5rem 0; font-size: 1.6rem; color: var(--heading-color); }
+    .meta { color: var(--muted); margin-bottom: 1.25rem; }
+    section { margin-bottom: 1rem; }
+    pre { background:#f6f8fa; padding:0.75rem; overflow:auto; border-radius:6px; }
+    label { display:block; margin:0.5rem 0 0.25rem 0; font-weight:600; }
+    input[type="email"], input[type="text"], textarea {
+      width:100%; padding:0.5rem; border:1px solid #ddd; border-radius:6px; font-size:0.95rem;
+    }
+    button { margin-top:0.75rem; padding:0.6rem 0.9rem; font-weight:600; border-radius:6px; border:none; cursor:pointer; }
+    .status { margin-top:0.5rem; color:var(--muted); font-size:0.95rem; }
+    .note { color: var(--muted); font-size:0.95rem; }
+    footer { margin-top:1.5rem; color:var(--muted); font-size:0.9rem; border-top:1px solid #eee; padding-top:1rem; }
+  </style>
+</head>
+<body>
+  <main role="main" aria-labelledby="title">
+    <h1 id="title">How to Request Deletion of Your Data</h1>
+    <div class="meta">If you'd like us to delete your account and any campaign data we store, follow one of the methods below. Effective: <time>August 15, 2025</time>.</div>
+
+    <section aria-labelledby="summary">
+      <h2 id="summary">Summary (quick)</h2>
+      <p class="note">
+        You can request deletion by: <strong>1) using the form below</strong>, <strong>2) emailing us directly at <a id="contact-email" href="mailto:[zohaibhussainsathio@gmail.com]">[zohaibhussainsathio@gmail.com]</a></strong>, or <strong>3) using the authenticated API (for integrators).</strong>
+      </p>
+    </section>
+
+    <section aria-labelledby="what-we-delete">
+      <h2 id="what-we-delete">What we will delete</h2>
+      <ul>
+        <li>Your account profile data stored with us (name, email, account metadata).</li>
+        <li>Meta Ads campaign data retrieved on your behalf and stored in our system (campaign IDs, metrics, logs) — unless required to retain for legal obligations.</li>
+        <li>Associated analytics and logs used specifically for your account (we may retain non-identifying aggregates).</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="how-to-delete">
+      <h2 id="how-to-delete">How to request deletion</h2>
+
+      <h3>Method A — In-app / interactive (Recommended)</h3>
+      <p>If you are logged into your AI Ads Analyst account, use the form below. We'll verify your ownership (email or OAuth token) and queue the deletion. You will receive confirmation emails during the process.</p>
+
+      <form id="deletion-form" aria-describedby="form-desc">
+        <div id="form-desc" class="note">We verify requests to avoid fraudulent deletion. Provide the email associated with your AI Ads Analyst account and optionally your account ID (if known).</div>
+
+        <label for="email">Account Email (required)</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+
+        <label for="account-id">Account ID (optional)</label>
+        <input id="account-id" name="accountId" type="text" placeholder="Account ID from dashboard (if known)" />
+
+        <label for="reason">Reason (optional)</label>
+        <textarea id="reason" name="reason" rows="3" placeholder="Optional note (helps us improve)"></textarea>
+
+        <button id="submit-btn" type="button">Submit Deletion Request</button>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+      </form>
+
+      <hr />
+
+      <h3>Method B — Email</h3>
+      <p>If you prefer, email the following details to <strong><a id="contact-email-2" href="mailto:[zohaibhussainsathio@gmail.com]">[zohaibhussainsathio@gmail.com]</a></strong> with subject line <code>Data Deletion Request</code>:</p>
+      <pre>
+Required:
+- Email address used to register: your-email@example.com
+- Request type: Data Deletion Request
+
+Optional but helpful:
+- Account ID (from dashboard)
+- Approximate date you last used the app
+      </pre>
+      <p class="note">We will verify your request by sending a confirmation to the registered email address before deleting. If you cannot access that email, we will request additional verification to prevent unauthorized deletion.</p>
+
+      <hr />
+
+      <h3>Method C — Integrator / API (advanced)</h3>
+      <p>If you are an integrator or developer with an authenticated client, you can call our authenticated API endpoint:</p>
+      <pre>
+POST https://[[YOUR_DOMAIN]]/api/request-deletion
+Headers:
+  Authorization: Bearer &lt;your-access-token&gt;
+  Content-Type: application/json
+
+Body (JSON):
+{
+  "email": "you@example.com",
+  "account_id": "optional-account-id"
+}
+      </pre>
+      <p class="note">Response will include a job ID and estimated completion window. Use the job ID to check status at <code>/api/deletion-status/{jobId}</code>.</p>
+    </section>
+
+    <section aria-labelledby="timeline">
+      <h2 id="timeline">What happens after you request deletion</h2>
+      <ol>
+        <li><strong>Verification:</strong> We verify the request to prevent fraud (email confirmation or OAuth token). This typically completes within 24-72 hours.</li>
+        <li><strong>Deletion process:</strong> Once verified, we queue your account for removal. We will remove active records within <strong>30 days</strong>.</li>
+        <li><strong>Backups:</strong> Encrypted backups may persist for a limited retention period per our backup policy; we will schedule removal from backups per our retention schedule and will not use such backups to restore personal data beyond necessary recovery windows.</li>
+        <li><strong>Confirmation:</strong> We will send a final email when deletion completes.</li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="fraud">
+      <h2 id="fraud">Fraud prevention & verification</h2>
+      <p>To protect accounts from malicious deletion requests we will:</p>
+      <ul>
+        <li>Require confirmation via the registered email (or OAuth confirmation).</li>
+        <li>Use rate limiting and identity checks on repeated requests.</li>
+        <li>Request additional proof if the registered email is inaccessible.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="disputes">
+      <h2 id="disputes">If you change your mind or have questions</h2>
+      <p>Contact us at <a id="contact-email-3" href="mailto:[zohaibhussainsathio@gmail.com]">[zohaibhussainsathio@gmail.com]</a> with subject <code>Deletion Question</code>. If deletion is in progress and you request to stop it, we will evaluate based on job state and applicable policy (some deletions are irreversible once started).</p>
+    </section>
+
+    <footer>
+      <p class="note">Company: [MEASURECAMP (SMC-PRIVATE) LIMITED] · Hosted at: <a href="https://[github.com/Zohaib-Sathio/ai-ads-analyst-privacy/]">[https://github.com/Zohaib-Sathio/ai-ads-analyst-privacy/]</a></p>
+    </footer>
+  </main>
+
+  <script>
+  /*
+    Deletion form client logic:
+    - Posts to /api/request-deletion (same-origin).
+    - Retries up to 3 attempts with exponential backoff (500ms, 1000ms, 2000ms).
+    - Provides idempotent behavior on client side (disables button while pending).
+    - NOTE: This is a UI convenience ONLY. Backend must perform authoritative authentication, verification,
+      idempotency, deletion queueing, audit logging, and secure wipe operations.
+  */
+  (function () {
+    'use strict';
+
+    var submitBtn = document.getElementById('submit-btn');
+    var statusEl = document.getElementById('status');
+
+    function setStatus(msg, isError) {
+      statusEl.textContent = msg;
+      statusEl.style.color = isError ? '#b91c1c' : '';
+    }
+
+    function buildPayload() {
+      return {
+        email: document.getElementById('email').value.trim(),
+        account_id: document.getElementById('account-id').value.trim() || undefined,
+        reason: document.getElementById('reason').value.trim() || undefined,
+        source: 'web-deletion-form'
+      };
+    }
+
+    async function fetchWithRetry(url, options, retries, backoffMs) {
+      try {
+        var resp = await fetch(url, options);
+        if (!resp.ok) {
+          var text = await resp.text().catch(()=>null);
+          throw new Error('Bad response: ' + resp.status + (text ? (' - ' + text) : ''));
+        }
+        return await resp.json().catch(()=>({}));
+      } catch (err) {
+        if (retries > 0) {
+          await new Promise(function (res) { setTimeout(res, backoffMs); });
+          return fetchWithRetry(url, options, retries - 1, backoffMs * 2);
+        } else {
+          throw err;
+        }
+      }
+    }
+
+    submitBtn.addEventListener('click', async function () {
+      var email = document.getElementById('email').value.trim();
+      if (!email) { setStatus('Please enter the email associated with your account.', true); return; }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      setStatus('Submitting deletion request — attempting to contact server...', false);
+
+      var payload = buildPayload();
+
+      try {
+        var resp = await fetchWithRetry('/api/request-deletion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'same-origin'
+        }, 3, 500);
+
+        // Expected minimal response: { job_id: "...", status: "queued", eta_days: 30 }
+        if (resp && resp.job_id) {
+          setStatus('Deletion request accepted. Job ID: ' + resp.job_id + '. You will receive verification email shortly.', false);
+          submitBtn.textContent = 'Submitted';
+        } else {
+          // Fallback messaging
+          setStatus('Deletion request submitted; server returned unexpected response. Please check your email for verification.', false);
+          submitBtn.textContent = 'Submitted';
+        }
+      } catch (err) {
+        // If server unreachable or returned error, fall back to instructing user to email
+        console.error('Deletion request error:', err);
+        setStatus('Failed to contact server. Please email a Data Deletion Request to [[YOUR_EMAIL]] or try again later.', true);
+        submitBtn.textContent = 'Submit Deletion Request';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
